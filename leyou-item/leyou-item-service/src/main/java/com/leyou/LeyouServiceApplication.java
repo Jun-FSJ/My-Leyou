@@ -13,6 +13,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableDiscoveryClient
 @MapperScan("com.leyou.item.mapper") //mapper接口的扫描
 public class LeyouServiceApplication {
+    //a
     public static void main(String[] args) {
         SpringApplication.run(LeyouServiceApplication.class);
     }
