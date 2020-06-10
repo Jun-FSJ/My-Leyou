@@ -1,5 +1,6 @@
 package com.leyou.item.controller;
 
+import com.leyou.item.bo.SpuBo;
 import com.leyou.item.pojo.Brand;
 import com.leyou.item.service.BrandService;
 import com.leyou.page.PageResult;
@@ -89,4 +90,5 @@ public class BrandController {
         }
         return ResponseEntity.ok(brand);
     }
+
 }

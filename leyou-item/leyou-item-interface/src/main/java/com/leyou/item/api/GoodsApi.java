@@ -2,6 +2,7 @@ package com.leyou.item.api;
 
 import com.leyou.item.bo.SpuBo;
 import com.leyou.item.pojo.Sku;
+import com.leyou.item.pojo.Spu;
 import com.leyou.item.pojo.SpuDetail;
 import com.leyou.page.PageResult;
 import org.springframework.http.ResponseEntity;
@@ -45,4 +46,11 @@ public interface GoodsApi {
      */
     @GetMapping("sku/list")
     public List<Sku> querySkusBySpuId(@RequestParam("id") Long spuId);
+    /**
+     * 根据spuID查询spu信息
+     * @param id
+     * @return
+     */
+    @GetMapping("{id}")
+    public Spu querySpuById(@PathVariable("id") Long id);
 }

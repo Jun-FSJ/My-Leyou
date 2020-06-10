@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.acl.Group;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,5 +57,19 @@ public class SpecificationController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(specParams);
+    }
+
+    /**
+     * 根据cid查询规格参数组
+     * @param cid
+     * @return
+     */
+    @GetMapping("group/param/{cid}")
+    public ResponseEntity<List<SpecGroup>> querySpecsByCid(@PathVariable("cid") Long cid){
+        List<SpecGroup> list = this.specificationService.querySpecsByCid(cid);
+        if (CollectionUtils.isEmpty(list)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(list);
     }
 }

@@ -5,8 +5,10 @@ import com.leyou.item.mapper.SpecParamMapper;
 import com.leyou.item.pojo.SpecGroup;
 import com.leyou.item.pojo.SpecParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.security.acl.Group;
 import java.util.List;
 
 /**
@@ -44,4 +46,18 @@ public class SpecificationService {
         return this.specParamMapper.select(specParam);
     }
 
+    /**
+     * 根据cid查询规格参数组,及组内参数值
+     * @param cid
+     * @return
+     */
+    public List<SpecGroup> querySpecsByCid(Long cid) {
+        //查询规格组
+        List<SpecGroup> specGroups = this.querySpecGroupByCid(cid);
+        specGroups.forEach(specGroup -> {
+            //查询组内参数
+            specGroup.setParams(this.querySpecParamByThing(specGroup.getId(),null, null, null));
+        });
+        return specGroups;
+    }
 }

@@ -7,7 +7,7 @@ import com.leyou.item.mapper.*;
 import com.leyou.item.pojo.*;
 import com.leyou.page.PageResult;
 import org.apache.commons.lang.StringUtils;
-import org.omg.PortableInterceptor.Interceptor;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * @author Jun
@@ -39,6 +40,9 @@ public class GoodsService {
 
     @Autowired
     private StockMapper stockMapper;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     /**
      * 分页进行商品查询
@@ -102,8 +106,8 @@ public class GoodsService {
         SpuDetail spuDetail = spuBo.getSpuDetail();
         spuDetail.setSpuId(spuBo.getId());
         this.spuDetailMapper.insertSelective(spuDetail);
-
         saveSkuAndStock(spuBo);
+        sendMessage(spuBo.getId(),"insert");
     }
 
     /**
@@ -136,6 +140,21 @@ public class GoodsService {
         this.spuMapper.updateByPrimaryKeySelective(spuBo);
         //修改spuDeatil表
         this.spuDetailMapper.updateByPrimaryKeySelective(spuBo.getSpuDetail());
+        sendMessage(spuBo.getId(),"update");
+    }
+
+    /**
+     * 封装发送信息的方法
+     * @param id
+     * @param type
+     */
+    public void sendMessage(Long id,String type){
+        //发送消息
+        try {
+            this.amqpTemplate.convertAndSend("item."+type,id);
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     /**
@@ -186,4 +205,12 @@ public class GoodsService {
         return skus;
     }
 
+    /**
+     * 根据spuID查询spu信息
+     * @param id
+     * @return
+     */
+    public Spu querySpuById(Long id) {
+        return this.spuMapper.selectByPrimaryKey(id);
+    }
 }

@@ -8,13 +8,13 @@ import java.util.List;
  */
 public class PageResult<T> {
     private Long total;//总条数
-    private Long totalPage;//总页数
+    private Integer totalPage;//总页数
     private List<T> items;//当前页数据
 
     public PageResult() {
     }
 
-    public PageResult(Long total, List<T> items, Long totalPage) {
+    public PageResult(Long total, List<T> items, Integer totalPage) {
         this.total = total;
         this.items = items;
         this.totalPage = totalPage;
@@ -41,11 +41,11 @@ public class PageResult<T> {
         this.items = items;
     }
 
-    public Long getTotalPage() {
+    public Integer getTotalPage() {
         return totalPage;
     }
 
-    public void setTotalPage(Long totalPage) {
+    public void setTotalPage(Integer totalPage) {
         this.totalPage = totalPage;
     }
 }
